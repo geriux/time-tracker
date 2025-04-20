@@ -1,9 +1,21 @@
 const { hairlineWidth } = require("nativewind/theme");
 
+const colors = require("./colors");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
-  theme: {},
+  theme: {
+    extend: {
+      colors,
+      fontFamily: {
+        condensed: "HelveticaNeue-CondensedBlack",
+      },
+      borderWidth: {
+        hairline: hairlineWidth(),
+      },
+    },
+  },
   plugins: [],
 };
