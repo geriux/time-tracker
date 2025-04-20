@@ -1,4 +1,4 @@
-import { Animated } from "react-native";
+import { Animated, Text, View } from "react-native";
 import { FC, useRef } from "react";
 import { Activity } from "@/common/activities";
 import ActivityButton from "./activity-button";
@@ -42,31 +42,37 @@ const ActivitiesList: FC<ActivitiesListProps> = ({ activities, onPress }) => {
   );
 
   return (
-    <Animated.ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      alwaysBounceHorizontal={false}
-      decelerationRate={0}
-      snapToInterval={ITEM_WIDTH}
-      contentContainerStyle={{
-        paddingLeft: 30,
-        paddingVertical: 30,
-      }}
-      onScroll={handleScroll}
-      scrollEventThrottle={16}
-    >
-      {activities.map((activity: Activity, index: number) => {
-        return (
-          <Animated.View style={getAnimatedStyle(index)} key={activity.id}>
-            <ActivityButton
-              activity={activity}
-              onPress={onPress}
-              size={ITEM_WIDTH}
-            />
-          </Animated.View>
-        );
-      })}
-    </Animated.ScrollView>
+    <View>
+      <Text className="font-condensed text-4xl text-primary text-center mb-8">
+        What do you want to{"\n"}track today?
+      </Text>
+
+      <Animated.ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        alwaysBounceHorizontal={false}
+        decelerationRate={0}
+        snapToInterval={ITEM_WIDTH}
+        contentContainerStyle={{
+          paddingLeft: 30,
+          paddingVertical: 30,
+        }}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+      >
+        {activities.map((activity: Activity, index: number) => {
+          return (
+            <Animated.View style={getAnimatedStyle(index)} key={activity.id}>
+              <ActivityButton
+                activity={activity}
+                onPress={onPress}
+                size={ITEM_WIDTH}
+              />
+            </Animated.View>
+          );
+        })}
+      </Animated.ScrollView>
+    </View>
   );
 };
 
