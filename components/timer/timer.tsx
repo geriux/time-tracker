@@ -40,6 +40,9 @@ const Timer: FC<TimerProps> = ({ onFinished, onStopped }) => {
 
   const toggleTimer = () => {
     if (!isRunning) {
+      // Adding 1 second to the timer to display instant feedback in the UI
+      // before the interval.
+      setTimerDuration(timerDuration + 1);
       setIsRunning(true);
     } else {
       setIsRunning(false);

@@ -22,7 +22,12 @@ const TimerButton: FC<TimerButtonProps> = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7} disabled={!enabled}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      disabled={!enabled}
+      delayPressIn={0}
+    >
       <View
         className="w-[76px] h-[76px] rounded-[38px]
     border border-2 border-primary justify-center items-center"
