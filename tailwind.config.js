@@ -11,6 +11,7 @@ module.exports = {
       colors,
       fontFamily: {
         condensed: "HelveticaNeue-CondensedBlack",
+        light: "HelveticaNeue-Light",
       },
       borderWidth: {
         hairline: hairlineWidth(),
