@@ -1,6 +1,5 @@
 import { Animated, View } from "react-native";
-import { useEffect, useRef, useState } from "react";
-import { useNavigation } from "expo-router";
+import { useRef, useState } from "react";
 import GradientBackground from "@/components/gradient-background";
 import ActivitiesList from "@/components/activities-list";
 import Header from "@/components/header";
@@ -9,14 +8,9 @@ import Timer from "@/components/timer";
 import { ACTIVITIES, Activity } from "@/common/activities";
 
 export default function Home() {
-  const navigation = useNavigation();
   const [currentActivity, setCurrentActivity] = useState<Activity | null>(null);
   const animationOpacity = useRef(new Animated.Value(1)).current;
   const hiddenOpacity = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  }, [navigation]);
 
   const startActivity = (activity: Activity) => {
     Animated.timing(hiddenOpacity, {

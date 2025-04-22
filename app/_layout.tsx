@@ -12,7 +12,20 @@ export default function RootLayout() {
       edges={["top", "right", "left"]}
     >
       <StatusBar style="light" />
-      <Stack />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen
+          name="stats"
+          options={{
+            presentation: "modal",
+          }}
+        />
+        <Stack.Screen name="+not-found" />
+      </Stack>
     </SafeAreaView>
   );
 }
