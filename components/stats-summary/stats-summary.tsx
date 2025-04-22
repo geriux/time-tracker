@@ -29,14 +29,17 @@ const StatsSummary: FC<StatsSummaryProps> = ({ data }) => {
       </Text>
 
       <View className="bg-primary rounded-2xl px-4 py-2 mt-2">
-        <Text className="font-light text-neutral text-lg tracking-wide">
-          {`Total time: ${getTotalTime(totalTime)}`}
+        <Text className="text-neutral text-lg tracking-wide">
+          <Text className="font-boldCustom">Total time: </Text>
+          <Text className="font-light ">{getTotalTime(totalTime)}</Text>
         </Text>
-        <Text className="font-light text-neutral text-lg tracking-wide">
-          {`Most frequent: ${mostFrequent}`}
+        <Text className="text-neutral text-lg tracking-wide">
+          <Text className="font-boldCustom">Most frequent: </Text>
+          <Text className="font-light">{mostFrequent}</Text>
         </Text>
-        <Text className="font-light text-neutral text-lg tracking-wide">
-          {`Longest session: ${longestSession} (${longestSessionActivity})`}
+        <Text className="text-neutral text-lg tracking-wide">
+          <Text className="font-boldCustom">Longest session: </Text>
+          <Text className="font-light">{`${longestSession} (${longestSessionActivity})`}</Text>
         </Text>
       </View>
     </View>
