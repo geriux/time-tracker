@@ -1,40 +1,76 @@
+import { DataSource } from "@shopify/react-native-skia";
 import { ImageSourcePropType } from "react-native";
 
 export interface Activity {
-  id: number;
-  name: string;
+  color: string;
   icon: ImageSourcePropType;
+  name: string;
+  slug: string;
 }
 
 export const ACTIVITIES: Activity[] = [
-  { id: 1, name: "Work", icon: require("@/assets/images/work.png") },
-  { id: 3, name: "Excercise", icon: require("@/assets/images/excercise.png") },
-  { id: 2, name: "Meals", icon: require("@/assets/images/meals.png") },
   {
-    id: 4,
-    name: "Meditation",
+    color: "#6A994E",
+    icon: require("@/assets/images/work.png"),
+    name: "Work",
+    slug: "work",
+  },
+  {
+    color: "#A7C957",
+    icon: require("@/assets/images/excercise.png"),
+    name: "Excercise",
+    slug: "excercise",
+  },
+  {
+    color: "#386641",
+    icon: require("@/assets/images/meals.png"),
+    name: "Meals",
+    slug: "meals",
+  },
+  {
+    color: "#F4A261",
     icon: require("@/assets/images/meditation.png"),
+    name: "Meditation",
+    slug: "meditation",
   },
-  { id: 5, name: "Study", icon: require("@/assets/images/study.png") },
-  { id: 6, name: "Sleep", icon: require("@/assets/images/sleep.png") },
   {
-    id: 7,
-    name: "Entertainment",
+    color: "#E76F51",
+    icon: require("@/assets/images/study.png"),
+    name: "Study",
+    slug: "study",
+  },
+  {
+    color: "#E63946",
+    icon: require("@/assets/images/sleep.png"),
+    name: "Sleep",
+    slug: "sleep",
+  },
+  {
+    color: "#F9844A",
     icon: require("@/assets/images/entertainment.png"),
+    name: "Entertainment",
+    slug: "entertainment",
   },
   {
-    id: 8,
-    name: "Socializing",
+    color: "#9B5DE5",
     icon: require("@/assets/images/socializing.png"),
+    name: "Socializing",
+    slug: "socializing",
   },
   {
-    id: 9,
-    name: "Creative Time",
+    color: "#F15BB5",
     icon: require("@/assets/images/creative.png"),
+    name: "Creative Time",
+    slug: "creative-time",
   },
   {
-    id: 10,
-    name: "Screen Time",
+    color: "#00BBF9",
     icon: require("@/assets/images/screen-time.png"),
+    name: "Screen Time",
+    slug: "screen-time",
   },
 ];
+
+export function getActivityIcon(slug: string): ImageSourcePropType | undefined {
+  return ACTIVITIES.find((activity) => activity.slug === slug)?.icon;
+}

@@ -62,7 +62,7 @@ const ActivitiesList: FC<ActivitiesListProps> = ({ activities, onPress }) => {
       >
         {activities.map((activity: Activity, index: number) => {
           return (
-            <Animated.View style={getAnimatedStyle(index)} key={activity.id}>
+            <Animated.View style={getAnimatedStyle(index)} key={activity.slug}>
               <ActivityButton
                 activity={activity}
                 onPress={onPress}
