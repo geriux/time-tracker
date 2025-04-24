@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import { router } from "expo-router";
 import GradientBackground from "@/components/gradient-background";
@@ -25,6 +26,14 @@ function SignIn() {
     if (!signIn) return;
     setError("");
     setLoadingLogin(true);
+    Keyboard.dismiss();
+
+    if (!email || !password) {
+      setLoadingLogin(false);
+      setError("Please enter your email and password");
+      return;
+    }
+
     try {
       await signIn(
         email,
