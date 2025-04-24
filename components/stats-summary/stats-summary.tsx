@@ -51,7 +51,7 @@ const StatsSummary: FC<StatsSummaryProps> = ({ data, isLoading, hasError }) => {
           </Text>
         )}
 
-        {!data || !totalTime ? (
+        {!isLoading && (!data || !totalTime) ? (
           <Text className="text-secondary text-ml font-light self-center mt-9">
             No data available
           </Text>
