@@ -1,16 +1,44 @@
 import { FC } from "react";
-import { View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { Pie, PolarChart } from "victory-native";
 import { useFont } from "@shopify/react-native-skia";
 import PieChartCustomLabel from "./pie-chart-custom-label";
 import { defaultFont, PieChartData } from "@/common/stats";
+import colors from "@/colors";
 
 type PieChartProps = {
-  data: PieChartData[];
+  data: PieChartData[] | null;
+  hasError: boolean;
+  isLoading: boolean;
 };
 
-const PieChart: FC<PieChartProps> = ({ data }) => {
+const PieChart: FC<PieChartProps> = ({ data, isLoading, hasError }) => {
   const font = useFont(defaultFont, 10);
+
+  if (isLoading) {
+    return (
+      <View className="absolute top-0 bottom-0 left-0 right-0 z-10 items-center justify-center">
+        <ActivityIndicator size="small" color={colors.primary} />
+      </View>
+    );
+  }
+
+  if (hasError && !isLoading) {
+    return (
+      <Text className="text-primary text-ml font-light self-center mt-20">
+        Error loading data
+      </Text>
+    );
+  }
+
+  if (!data || data.length === 0) {
+    return (
+      <Text className="text-primary text-ml font-light self-center mt-20">
+        No data available
+      </Text>
+    );
+  }
+
   return (
     <View style={{ height: 230 }}>
       <PolarChart
@@ -34,6 +62,7 @@ const PieChart: FC<PieChartProps> = ({ data }) => {
                         position={position}
                         slice={slice}
                         font={font}
+                        numberOfSlices={data.length}
                       />
                     )}
                   </Pie.Label>

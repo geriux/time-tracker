@@ -30,22 +30,26 @@ const PieChartCustomLabel = ({
   slice,
   font,
   position,
+  numberOfSlices,
 }: {
   slice: PieSliceData;
   font: SkFont | null;
   position: { x: number; y: number };
+  numberOfSlices: number;
 }) => {
   const { x, y } = position;
   const label = slice.label;
   const icon = getActivityIcon(label) as DataSource;
   const image = useImage(icon);
   const labelValue = getValueLabel(slice.value);
+  const iconSize = ICON_SIZE * (numberOfSlices <= 4 ? 1.5 : 1);
+  const iconOffset = ICON_OFFSET * (numberOfSlices <= 4 ? 4 : 1);
 
   return (
     <Group transform={[{ translateY: 0, translateX: 0 }]}>
       <Text
-        x={x - ICON_SIZE / 2 + ICON_OFFSET}
-        y={y - ICON_SIZE / 2}
+        x={x - iconSize / 2 + iconOffset}
+        y={y - iconSize / 2}
         text={labelValue}
         font={font}
         color={colors.accent}
@@ -54,10 +58,10 @@ const PieChartCustomLabel = ({
       <Image
         image={image}
         fit="contain"
-        x={x - ICON_SIZE / 2}
-        y={y - ICON_SIZE / 2}
-        width={ICON_SIZE}
-        height={ICON_SIZE}
+        x={x - iconSize / 2}
+        y={y - iconSize / 2}
+        width={iconSize}
+        height={iconSize}
       >
         <ColorMatrix
           matrix={[
