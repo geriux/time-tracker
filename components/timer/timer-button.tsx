@@ -7,6 +7,7 @@ import {
 } from "react-native";
 
 type TimerButtonProps = {
+  accessibilityLabel?: string;
   buttonStyle?: object;
   enabled?: boolean;
   icon: ImageSourcePropType;
@@ -15,6 +16,7 @@ type TimerButtonProps = {
 };
 
 const TimerButton: FC<TimerButtonProps> = ({
+  accessibilityLabel,
   buttonStyle,
   enabled = true,
   icon,
@@ -23,6 +25,7 @@ const TimerButton: FC<TimerButtonProps> = ({
 }) => {
   return (
     <TouchableOpacity
+      accessibilityLabel={accessibilityLabel}
       onPress={onPress}
       activeOpacity={0.7}
       disabled={!enabled}

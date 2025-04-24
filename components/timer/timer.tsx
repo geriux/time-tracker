@@ -125,18 +125,23 @@ const Timer: FC<TimerProps> = ({ onFinished, onStopped }) => {
 
   return (
     <>
-      <Text className="font-condensed text-[96px] text-primary text-center mb-6">
+      <Text
+        accessibilityLabel="current-timer"
+        className="font-condensed text-[96px] text-primary text-center mb-6"
+      >
         {formattedTime}
       </Text>
 
       <View className="flex-row items-center justify-center">
         <TimerButton
+          accessibilityLabel="stop-button"
           icon={require("@/assets/images/timer-stop.png")}
           iconStyles={{ width: 32, height: 32 }}
           onPress={stopTimer}
         />
 
         <TimerButton
+          accessibilityLabel="start-pause-button"
           buttonStyle={{ marginHorizontal: 18 }}
           icon={toggleTimerIcon}
           iconStyles={toggleTimerIconStyles}
@@ -144,6 +149,7 @@ const Timer: FC<TimerProps> = ({ onFinished, onStopped }) => {
         />
 
         <TimerButton
+          accessibilityLabel="finish-button"
           buttonStyle={finishButtonStyles}
           enabled={timerDuration > 0}
           icon={require("@/assets/images/timer-finish.png")}
