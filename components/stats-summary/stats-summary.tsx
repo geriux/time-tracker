@@ -31,6 +31,7 @@ const StatsSummary: FC<StatsSummaryProps> = ({ data, isLoading, hasError }) => {
   const longestSessionActivity = getActivityName(
     longestSession?.category || ""
   );
+  const hasData = data && totalTime && totalTime > 0;
 
   return (
     <View className="px-6">
@@ -51,11 +52,13 @@ const StatsSummary: FC<StatsSummaryProps> = ({ data, isLoading, hasError }) => {
           </Text>
         )}
 
-        {!isLoading && (!data || !totalTime) ? (
+        {!hasData && !isLoading && !hasError && (
           <Text className="text-secondary text-ml font-light self-center mt-9">
             No data available
           </Text>
-        ) : (
+        )}
+
+        {hasData && (
           <>
             <Text className="text-neutral text-lg tracking-wide">
               <Text className="font-boldCustom">Total time: </Text>
