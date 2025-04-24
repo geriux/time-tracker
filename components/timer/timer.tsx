@@ -3,6 +3,7 @@ import { Alert, View, Text } from "react-native";
 import TimerButton from "./timer-button";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import * as Haptics from "expo-haptics";
 
 dayjs.extend(duration);
 
@@ -39,6 +40,7 @@ const Timer: FC<TimerProps> = ({ onFinished, onStopped }) => {
   }, [isRunning]);
 
   const toggleTimer = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (!isRunning) {
       // Adding 1 second to the timer to display instant feedback in the UI
       // before the interval.
