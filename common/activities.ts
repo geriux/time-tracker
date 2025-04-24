@@ -1,4 +1,3 @@
-import { DataSource } from "@shopify/react-native-skia";
 import { ImageSourcePropType } from "react-native";
 
 export interface Activity {
@@ -73,4 +72,12 @@ export const ACTIVITIES: Activity[] = [
 
 export function getActivityIcon(slug: string): ImageSourcePropType | undefined {
   return ACTIVITIES.find((activity) => activity.slug === slug)?.icon;
+}
+
+export function getActivityColor(slug: string): string | undefined {
+  return ACTIVITIES.find((activity) => activity.slug === slug)?.color;
+}
+
+export function getActivityName(slug: string): string | undefined {
+  return ACTIVITIES.find((activity) => activity.slug === slug)?.name;
 }
