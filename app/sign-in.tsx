@@ -93,6 +93,9 @@ function SignIn() {
             font-light h-[50px] leading-none"
               placeholder="Password"
               secureTextEntry
+              autoCapitalize="none"
+              autoComplete={"off"}
+              autoCorrect={false}
               value={password}
               onChangeText={setPassword}
               onSubmitEditing={onLogin}
