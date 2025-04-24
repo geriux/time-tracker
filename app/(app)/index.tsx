@@ -50,7 +50,6 @@ export default function Home() {
 
   const onFinished = (seconds: number) => {
     if (!currentActivity) return;
-    console.log(`Ran activity ${currentActivity.name} for: ${seconds} seconds`);
     logActivity(currentActivity.slug, seconds);
     onTimerStopped();
   };
