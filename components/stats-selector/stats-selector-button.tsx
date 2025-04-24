@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { StatsSelectorValue } from "@/common/stats";
 
 type StatsSelectorButtonProps = {
   isDisabled: boolean;
@@ -7,8 +8,8 @@ type StatsSelectorButtonProps = {
   isLast: boolean;
   isSelected: boolean;
   label: string;
-  onPress: (value: string) => void;
-  value: string;
+  onPress: (value: StatsSelectorValue) => void;
+  value: StatsSelectorValue;
 };
 
 const hitSlop = {

@@ -1,17 +1,17 @@
 import { FC, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import StatsSelectorButton from "./stats-selector-button";
-import { StatsSelectorOption } from "@/common/stats";
+import { StatsSelectorOption, StatsSelectorValue } from "@/common/stats";
 
 type StatsSelectorProps = {
-  onPress: (value: string) => void;
+  onPress: (value: StatsSelectorValue) => void;
   options: StatsSelectorOption[];
 };
 
 const StatsSelector: FC<StatsSelectorProps> = ({ onPress, options }) => {
   const [selected, setSelected] = useState(options[0].value);
 
-  const onPressOption = (option: string) => {
+  const onPressOption = (option: StatsSelectorValue) => {
     setSelected(option);
 
     onPress(option);
