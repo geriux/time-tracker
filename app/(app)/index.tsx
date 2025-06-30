@@ -1,17 +1,21 @@
-import { Animated, Image, View } from "react-native";
+import { ActivityIndicator, Animated, Image, View, Text } from "react-native";
 import { useRef, useState } from "react";
 import GradientBackground from "@/components/gradient-background";
 import ActivitiesList from "@/components/activities-list";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Timer from "@/components/timer";
-import { getActivityIcon, ACTIVITIES, Activity } from "@/common/activities";
+import { Activity } from "@/common/types";
 import { logActivity } from "@/common/api";
+import { useListActivities } from "@time-tracker/activities/react";
+
+import colors from "@/colors";
 
 export default function Home() {
   const [currentActivity, setCurrentActivity] = useState<Activity | null>(null);
   const animationOpacity = useRef(new Animated.Value(1)).current;
   const hiddenOpacity = useRef(new Animated.Value(1)).current;
+  const { isLoading, data, error } = useListActivities();
 
   const startActivity = (activity: Activity) => {
     Animated.timing(hiddenOpacity, {
@@ -50,7 +54,7 @@ export default function Home() {
 
   const onFinished = (seconds: number) => {
     if (!currentActivity) return;
-    logActivity(currentActivity.slug, seconds);
+    logActivity(currentActivity.id, seconds);
     onTimerStopped();
   };
 
@@ -58,9 +62,7 @@ export default function Home() {
     startActivity(activity);
   };
 
-  const icon = currentActivity
-    ? getActivityIcon(currentActivity.slug)
-    : undefined;
+  const icon = undefined;
 
   return (
     <View className="flex-1 bg-secondary pt-10">
@@ -81,14 +83,23 @@ export default function Home() {
             )}
           </Animated.View>
 
-          <Animated.View style={{ opacity: hiddenOpacity }}>
-            {!currentActivity && (
-              <ActivitiesList
-                activities={ACTIVITIES}
-                onPress={onPressActivity}
-              />
-            )}
-          </Animated.View>
+          {error && !isLoading && (
+            <Text className="text-secondary text-ml font-light self-center mt-9">
+              Error loading data
+            </Text>
+          )}
+
+          {isLoading && !error ? (
+            <View className="absolute top-0 bottom-0 left-0 right-0 z-10 items-center justify-center">
+              <ActivityIndicator size="small" color={colors.primary} />
+            </View>
+          ) : (
+            <Animated.View style={{ opacity: hiddenOpacity }}>
+              {!currentActivity && (
+                <ActivitiesList data={data} onPress={onPressActivity} />
+              )}
+            </Animated.View>
+          )}
         </View>
       </View>
 
