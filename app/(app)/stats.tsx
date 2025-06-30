@@ -1,95 +1,47 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import { View, Text } from "react-native";
 import StatsSelector from "@/components/stats-selector";
 import StatsSummary from "@/components/stats-summary";
 import PieChart from "@/components/pie-chart";
 import BarChart from "@/components/bar-chart";
-import { STATS_SELECTOR_OPTIONS } from "@/common/stats";
+import { STATS_SELECTOR_OPTIONS, StatsSelectorValue } from "@/common/types";
 import {
-  getWeeklySummary,
-  getTimePerDay,
-  getTimeByCategory,
-} from "@/common/api";
-import {
-  StatsSummaryData,
-  StatsSelectorValue,
-  BarChartData,
-  PieChartData,
-} from "@/common/stats";
+  getStatsDateRange,
+  parseWeeklySummary,
+  parseTimePerDay,
+  parseTimeByCategory,
+} from "@/common/helpers";
+import { useGetActivityLogs } from "@time-tracker/activities/react";
+import dayjs from "dayjs";
+import isoWeek from "dayjs/plugin/isoWeek";
+
+dayjs.extend(isoWeek);
+
+const DEFAULT_STATS_SELECTOR: StatsSelectorValue = "week";
 
 function Stats() {
+  const currentDate = dayjs();
+  const startOfWeek = currentDate.startOf("isoWeek").format();
+  const endDate = dayjs().format();
+
   const [currenStatsFilter, setCurrenStatsFilter] =
-    useState<StatsSelectorValue>("week");
-  // State to manage the weekly summary data
-  const [weeklySummary, setWeeklySummary] = useState<StatsSummaryData | null>(
-    null
-  );
-  const [isFetchingWeeklySummary, setIsFetchingWeeklySummary] = useState(true);
-  const [hasFetchingWeeklySummaryFailed, setHasFetchingWeeklySummaryFailed] =
-    useState(false);
+    useState<StatsSelectorValue>(DEFAULT_STATS_SELECTOR);
 
-  // State to manage the total time per day data
-  const [timePerDay, setTimePerDay] = useState<BarChartData[] | null>(null);
-  const [isFetchingTimePerDay, setIsFetchingTimePerDay] = useState(true);
-  const [hasFetchingTimePerDayFailed, setHasFetchingTimePerDayFailed] =
-    useState(false);
-
-  // State to manage the time spent by category data
-  const [timeByCategory, setTimeByCategory] = useState<PieChartData[] | null>(
-    null
-  );
-  const [isFetchingTimeByCategory, setIsFetchingTimeByCategory] =
-    useState(true);
-  const [hasFetchingTimeByCategoryFailed, setHasFetchingTimeByCategoryFailed] =
-    useState(false);
-
-  const fetchWeeklySummary = async () => {
-    setIsFetchingWeeklySummary(true);
-    setHasFetchingWeeklySummaryFailed(false);
-    try {
-      const summary = await getWeeklySummary();
-      setWeeklySummary(summary);
-      setIsFetchingWeeklySummary(false);
-    } catch (error) {
-      setIsFetchingWeeklySummary(false);
-      setHasFetchingWeeklySummaryFailed(true);
-    }
-  };
-
-  const fetchTimePerDay = async (filter: StatsSelectorValue) => {
-    setIsFetchingTimePerDay(true);
-    setHasFetchingTimePerDayFailed(false);
-    try {
-      const timePerDay = await getTimePerDay(filter);
-      setTimePerDay(timePerDay);
-      setIsFetchingTimePerDay(false);
-    } catch (error) {
-      setIsFetchingTimePerDay(false);
-      setHasFetchingTimePerDayFailed(true);
-    }
-  };
-
-  const fetchTimeByCategory = async (filter: StatsSelectorValue) => {
-    setIsFetchingTimeByCategory(true);
-    setHasFetchingTimeByCategoryFailed(false);
-    try {
-      const timeByCategory = await getTimeByCategory(filter);
-      setTimeByCategory(timeByCategory);
-      setIsFetchingTimeByCategory(false);
-    } catch (error) {
-      setIsFetchingTimeByCategory(false);
-      setHasFetchingTimeByCategoryFailed(true);
-    }
-  };
-
-  useEffect(() => {
-    fetchWeeklySummary();
-  }, []);
-
-  useEffect(() => {
-    fetchTimePerDay(currenStatsFilter);
-    fetchTimeByCategory(currenStatsFilter);
+  const { startDate } = useMemo(() => {
+    const range = getStatsDateRange(currenStatsFilter);
+    return {
+      startDate: dayjs().startOf(range).format(),
+    };
   }, [currenStatsFilter]);
+
+  const { data, isLoading, error } = useGetActivityLogs({
+    start: startDate,
+    end: endDate,
+  });
+
+  const weeklySummary = parseWeeklySummary(data, startOfWeek);
+  const timePerDay = parseTimePerDay(data);
+  const timeByCategory = parseTimeByCategory(data);
 
   const onStatsSelectorPress = (value: StatsSelectorValue) => {
     setCurrenStatsFilter(value);
@@ -104,9 +56,9 @@ function Stats() {
       </View>
 
       <StatsSummary
-        hasError={hasFetchingWeeklySummaryFailed}
+        hasError={error}
         data={weeklySummary}
-        isLoading={isFetchingWeeklySummary}
+        isLoading={isLoading}
       />
 
       <StatsSelector
@@ -121,11 +73,7 @@ function Stats() {
       </View>
 
       <View className="h-[170] px-6 mt-2">
-        <BarChart
-          hasError={hasFetchingTimePerDayFailed}
-          data={timePerDay}
-          isLoading={isFetchingTimePerDay}
-        />
+        <BarChart hasError={error} data={timePerDay} isLoading={isLoading} />
       </View>
 
       <View className="px-6">
@@ -136,9 +84,9 @@ function Stats() {
 
       <View className="h-[200] px-6 mt-2 pt-2">
         <PieChart
-          hasError={hasFetchingTimeByCategoryFailed}
+          hasError={error}
           data={timeByCategory}
-          isLoading={isFetchingTimeByCategory}
+          isLoading={isLoading}
         />
       </View>
     </View>
