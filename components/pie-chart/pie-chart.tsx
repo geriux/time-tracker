@@ -3,12 +3,14 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { Pie, PolarChart } from "victory-native";
 import { useFont } from "@shopify/react-native-skia";
 import PieChartCustomLabel from "./pie-chart-custom-label";
-import { defaultFont, PieChartData } from "@/common/stats";
+import { PieChartData } from "@/common/types";
+import { defaultFont } from "@/common/theme";
 import colors from "@/colors";
+import { FirebaseError } from "firebase/app";
 
 type PieChartProps = {
   data: PieChartData[] | null;
-  hasError: boolean;
+  hasError: FirebaseError | null;
   isLoading: boolean;
 };
 
@@ -43,7 +45,7 @@ const PieChart: FC<PieChartProps> = ({ data, isLoading, hasError }) => {
     <View style={{ height: 230 }}>
       <PolarChart
         data={data.map((item) => ({
-          label: item.label,
+          label: item.icon,
           value: item.value,
           color: item.color,
         }))}
@@ -63,6 +65,7 @@ const PieChart: FC<PieChartProps> = ({ data, isLoading, hasError }) => {
                         slice={slice}
                         font={font}
                         numberOfSlices={data.length}
+                        icon={slice.label}
                       />
                     )}
                   </Pie.Label>

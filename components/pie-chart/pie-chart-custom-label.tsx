@@ -1,16 +1,19 @@
 import dayjs from "dayjs";
-import { getActivityIcon } from "@/common/activities";
 import colors from "@/colors";
 import {
-  useImage,
+  useSVG,
+  ImageSVG,
   Group,
   Text,
-  Image,
-  ColorMatrix,
-  DataSource,
+  Paint,
+  BlendColor,
+  rect,
+  fitbox,
   type SkFont,
 } from "@shopify/react-native-skia";
 import { type PieSliceData } from "victory-native";
+import useRemoteImage from "@/common/useRemoteImage";
+import useLocalSVG from "@/common/useLocalSVG";
 
 const ICON_SIZE = 20;
 const ICON_OFFSET = 2;
@@ -31,19 +34,35 @@ const PieChartCustomLabel = ({
   font,
   position,
   numberOfSlices,
+  icon,
 }: {
   slice: PieSliceData;
   font: SkFont | null;
   position: { x: number; y: number };
   numberOfSlices: number;
+  icon: string;
 }) => {
   const { x, y } = position;
-  const label = slice.label;
-  const icon = getActivityIcon(label) as DataSource;
-  const image = useImage(icon);
+  const { image: imageURL } = useRemoteImage(icon);
+
+  const localSVG = useLocalSVG(imageURL);
+  const remoteSVG = useSVG(imageURL);
+
+  const svg = imageURL?.startsWith("http") ? remoteSVG : localSVG;
+
   const labelValue = getValueLabel(slice.value);
   const iconSize = ICON_SIZE * (numberOfSlices <= 4 ? 1.5 : 1);
   const iconOffset = ICON_OFFSET * (numberOfSlices <= 4 ? 4 : 1);
+
+  if (!svg) return null;
+
+  const src = rect(0, 0, svg.width(), svg.height());
+  const dst = rect(0, 0, iconSize, iconSize);
+  const transform = [
+    { translateX: x - iconSize / 2 },
+    { translateY: y - iconSize / 2 },
+    ...fitbox("contain", src, dst),
+  ];
 
   return (
     <Group transform={[{ translateY: 0, translateX: 0 }]}>
@@ -55,20 +74,22 @@ const PieChartCustomLabel = ({
         color={colors.accent}
       />
 
-      <Image
-        image={image}
-        fit="contain"
-        x={x - iconSize / 2}
-        y={y - iconSize / 2}
-        width={iconSize}
-        height={iconSize}
+      <Group
+        transform={transform}
+        layer={
+          <Paint>
+            <BlendColor color="white" mode="srcIn" />
+          </Paint>
+        }
       >
-        <ColorMatrix
-          matrix={[
-            0, 0, 0, 0, 255, 0, 0, 0, 0, 255, 0, 0, 0, 0, 255, 0, 0, 0, 1, 0,
-          ]}
+        <ImageSVG
+          svg={svg}
+          x={0}
+          y={0}
+          width={svg.width()}
+          height={svg.height()}
         />
-      </Image>
+      </Group>
     </Group>
   );
 };
