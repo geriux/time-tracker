@@ -1,0 +1,46 @@
+query ListActivities @auth(level: PUBLIC) {
+  activities {
+    id
+    name
+    slug
+    icon
+    color
+  }
+}
+
+query ListUserActivityLogs @auth(level: USER) {
+  user(key: { id_expr: "auth.uid" }) {
+    id
+    logs: activityLogs_on_user {
+      activity {
+        id
+      }
+      startTime
+      endTime
+      duration
+    }
+  }
+}
+
+query GetActivityLogs($start: Timestamp, $end: Timestamp) @auth(level: USER) {
+  user(key: { id_expr: "auth.uid" }) {
+    id
+    logs: activityLogs_on_user(
+      where: {
+        _and: [{ startTime: { gt: $start } }, { endTime: { lt: $end } }]
+      }
+      orderBy: { startTime: ASC }
+    ) {
+      startTime
+      endTime
+      duration
+      activity {
+        id
+        name
+        slug
+        icon
+        color
+      }
+    }
+  }
+}

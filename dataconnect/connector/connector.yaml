@@ -1,0 +1,7 @@
+connectorId: default
+generate:
+  javascriptSdk:
+    outputDir: ../../activities/generated
+    package: "@time-tracker/activities"
+    packageJsonDir: ../..
+    react: true
