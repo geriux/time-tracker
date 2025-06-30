@@ -1,4 +1,4 @@
-import { ActivityIndicator, Animated, Image, View, Text } from "react-native";
+import { ActivityIndicator, Animated, View, Text } from "react-native";
 import { useRef, useState } from "react";
 import GradientBackground from "@/components/gradient-background";
 import ActivitiesList from "@/components/activities-list";
@@ -8,6 +8,7 @@ import Timer from "@/components/timer";
 import { Activity } from "@/common/types";
 import { logActivity } from "@/common/api";
 import { useListActivities } from "@time-tracker/activities/react";
+import Image from "@/components/image";
 
 import colors from "@/colors";
 
@@ -62,8 +63,6 @@ export default function Home() {
     startActivity(activity);
   };
 
-  const icon = undefined;
-
   return (
     <View className="flex-1 bg-secondary pt-10">
       <GradientBackground height="50%" />
@@ -77,7 +76,9 @@ export default function Home() {
           <Animated.View style={{ opacity: animationOpacity }}>
             {currentActivity && (
               <View className="h-[45vh]">
-                <Image source={icon} className="self-center" />
+                <View className="self-center">
+                  <Image source={currentActivity.icon} width={80} height={80} />
+                </View>
                 <Timer onStopped={onTimerStopped} onFinished={onFinished} />
               </View>
             )}
