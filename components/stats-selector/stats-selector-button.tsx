@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { StatsSelectorValue } from "@/common/stats";
+import { StatsSelectorValue } from "@/common/types";
 
 type StatsSelectorButtonProps = {
   isDisabled: boolean;

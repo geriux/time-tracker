@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View, Text } from "react-native";
-import { Activity } from "@/common/activities";
+import { Activity } from "@/common/types";
 
 type HeaderProps = {
   activity: Activity | null;

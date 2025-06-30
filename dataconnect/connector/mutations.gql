@@ -1,0 +1,16 @@
+mutation AddActivityLog(
+  $activityId: UUID!
+  $duration: Int!
+  $startTime: Timestamp!
+  $endTime: Timestamp!
+) @auth(level: USER) {
+  activityLog_insert(
+    data: {
+      activityId: $activityId
+      userId_expr: "auth.uid"
+      duration: $duration
+      startTime: $startTime
+      endTime: $endTime
+    }
+  )
+}

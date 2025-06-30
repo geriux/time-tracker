@@ -1,7 +1,8 @@
-import { Image, Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import GradientBackground from "@/components/gradient-background";
 import colors from "@/colors";
-import { Activity } from "@/common/activities";
+import { Activity } from "@/common/types";
+import Image from "@/components/image";
 
 const boxShadow = `0 4 2 0 ${colors.shadow}`;
 
@@ -34,7 +35,8 @@ function ActivityButton({
         <View className="w-[75px] h-[75px] mb-4">
           <Image
             source={activity.icon}
-            className="w-full h-full"
+            width={80}
+            height={80}
             resizeMode="contain"
           />
         </View>

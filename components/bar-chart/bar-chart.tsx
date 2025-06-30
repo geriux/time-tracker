@@ -4,11 +4,13 @@ import { Bar, CartesianChart } from "victory-native";
 import { LinearGradient, useFont, vec } from "@shopify/react-native-skia";
 import colors from "@/colors";
 import dayjs from "dayjs";
-import { defaultFont, BarChartData } from "@/common/stats";
+import { defaultFont } from "@/common/theme";
+import { BarChartData } from "@/common/types";
+import { FirebaseError } from "firebase/app";
 
 type BarChartProps = {
   data: BarChartData[] | null;
-  hasError: boolean;
+  hasError: FirebaseError | null;
   isLoading: boolean;
 };
 

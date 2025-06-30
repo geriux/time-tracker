@@ -1,0 +1,20 @@
+type User @table {
+  id: String! @default(expr: "auth.uid")
+}
+
+type Activity @table {
+  id: UUID! @default(expr: "uuidV4()")
+  color: String!
+  icon: String!
+  name: String!
+  slug: String! @unique
+}
+
+type ActivityLog @table(name: "ActivityLogs", key: "id") {
+  id: String! @default(expr: "uuidV4()")
+  activity: Activity!
+  user: User!
+  startTime: Timestamp! @default(expr: "request.time")
+  endTime: Timestamp! @default(expr: "request.time")
+  duration: Int! @default(expr: "0")
+}

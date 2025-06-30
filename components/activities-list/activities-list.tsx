@@ -1,17 +1,19 @@
 import { Animated, Text, View } from "react-native";
 import { FC, useRef } from "react";
-import { Activity } from "@/common/activities";
+import { Activity } from "@/common/types";
 import ActivityButton from "./activity-button";
+import { ListActivitiesData } from "@time-tracker/activities";
 
 const ITEM_WIDTH = 158;
 
 type ActivitiesListProps = {
-  activities: Activity[];
+  data: ListActivitiesData | undefined;
   onPress: (activity: Activity) => void;
 };
 
-const ActivitiesList: FC<ActivitiesListProps> = ({ activities, onPress }) => {
+const ActivitiesList: FC<ActivitiesListProps> = ({ data, onPress }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
+  const activities = data?.activities ?? [];
 
   const getAnimatedStyle = (index: number) => {
     const inputRange = [
@@ -60,7 +62,7 @@ const ActivitiesList: FC<ActivitiesListProps> = ({ activities, onPress }) => {
         onScroll={handleScroll}
         scrollEventThrottle={16}
       >
-        {activities.map((activity: Activity, index: number) => {
+        {activities.map((activity, index: number) => {
           return (
             <Animated.View style={getAnimatedStyle(index)} key={activity.slug}>
               <ActivityButton

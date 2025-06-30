@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { ActivityIndicator, View, Text } from "react-native";
-import { StatsSummaryData } from "@/common/stats";
+import { StatsSummaryData } from "@/common/types";
 import dayjs from "dayjs";
 import colors from "@/colors";
-import { getActivityName } from "@/common/activities";
+import { FirebaseError } from "firebase/app";
 
 type StatsSummaryProps = {
   data: StatsSummaryData | null;
-  hasError: boolean;
+  hasError: FirebaseError | null;
   isLoading: boolean;
 };
 
@@ -27,11 +27,9 @@ function getTotalTime(value?: number) {
 
 const StatsSummary: FC<StatsSummaryProps> = ({ data, isLoading, hasError }) => {
   const { totalTime, mostFrequent, longestSession } = data || {};
-  const mostFrequentActivity = getActivityName(mostFrequent || "");
-  const longestSessionActivity = getActivityName(
-    longestSession?.category || ""
-  );
-  const hasData = data && totalTime && totalTime > 0;
+  const mostFrequentActivity = mostFrequent;
+  const longestSessionActivity = longestSession?.activityName;
+  const hasData = totalTime !== undefined && totalTime > 0;
 
   return (
     <View className="px-6">

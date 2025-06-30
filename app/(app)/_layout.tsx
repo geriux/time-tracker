@@ -3,12 +3,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useAuth } from "@/common/auth";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "@/global.css";
 import colors from "@/colors";
 
 export default function AppLayout() {
   const { user, authLoading } = useAuth() ?? {};
+  const queryClient = new QueryClient();
 
   if (authLoading) {
     return (
@@ -28,19 +30,21 @@ export default function AppLayout() {
       edges={["top", "right", "left"]}
     >
       <StatusBar style="light" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="index" />
-        <Stack.Screen
-          name="stats"
-          options={{
-            presentation: "modal",
+      <QueryClientProvider client={queryClient}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
           }}
-        />
-      </Stack>
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen
+            name="stats"
+            options={{
+              presentation: "modal",
+            }}
+          />
+        </Stack>
+      </QueryClientProvider>
     </SafeAreaView>
   );
 }
